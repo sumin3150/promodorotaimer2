@@ -17,8 +17,23 @@ let remainingTime = initialWorkTime;
 
 // 設定値の変更時に即座に反映
 function updateSettings() {
-    initialWorkTime = parseInt(workTimeInput.value) * 60;
-    initialBreakTime = parseInt(breakTimeInput.value) * 60;
+    // 入力値のバリデーション
+    const workTime = parseInt(workTimeInput.value);
+    const breakTime = parseInt(breakTimeInput.value);
+    
+    if (isNaN(workTime) || workTime <= 0) {
+        workTimeInput.value = 25; // デフォルト値にリセット
+        return;
+    }
+    if (isNaN(breakTime) || breakTime <= 0) {
+        breakTimeInput.value = 5; // デフォルト値にリセット
+        return;
+    }
+
+    initialWorkTime = workTime * 60;
+    initialBreakTime = breakTime * 60;
+    
+    // タイマーが実行中でない場合、設定値を即座に反映
     if (!isRunning) {
         remainingTime = initialWorkTime;
         updateDisplay();
@@ -26,8 +41,8 @@ function updateSettings() {
 }
 
 // 設定値の変更を即座に反映
-workTimeInput.addEventListener('input', updateSettings);
-breakTimeInput.addEventListener('input', updateSettings);
+workTimeInput.addEventListener('change', updateSettings);
+breakTimeInput.addEventListener('change', updateSettings);
 
 // 時間表示の更新
 function updateDisplay() {
