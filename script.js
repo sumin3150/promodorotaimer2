@@ -11,9 +11,23 @@ const workTimeInput = document.getElementById('work-time');
 const breakTimeInput = document.getElementById('break-time');
 
 // 初期設定
-const initialWorkTime = parseInt(workTimeInput.value) * 60;
-const initialBreakTime = parseInt(breakTimeInput.value) * 60;
+let initialWorkTime = parseInt(workTimeInput.value) * 60;
+let initialBreakTime = parseInt(breakTimeInput.value) * 60;
 let remainingTime = initialWorkTime;
+
+// 設定値の変更時に即座に反映
+function updateSettings() {
+    initialWorkTime = parseInt(workTimeInput.value) * 60;
+    initialBreakTime = parseInt(breakTimeInput.value) * 60;
+    if (!isRunning) {
+        remainingTime = initialWorkTime;
+        updateDisplay();
+    }
+}
+
+// 設定値の変更を即座に反映
+workTimeInput.addEventListener('input', updateSettings);
+breakTimeInput.addEventListener('input', updateSettings);
 
 // 時間表示の更新
 function updateDisplay() {
